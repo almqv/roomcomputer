@@ -1,2 +1,3 @@
 config.py
 lib/__pycache__/
+__pycache__/
