@@ -16,7 +16,7 @@ def boolToString(v: bool): # To fix the dumb python syntax
 
 class APIrequest:
     # Get Req
-    async def get( dest: str="", payload: str="{}" ):
+    async def get( dest: str="", payload: str="" ):
         try:
             apiReq = req.get( genUrl(dest), data = payload )
             return apiReq
@@ -25,7 +25,7 @@ class APIrequest:
             print(err)
 
     # POST Req
-    async def post( dest: str="", payload: str="{}" ):
+    async def post( dest: str="", payload: str="" ):
         try:
             apiReq = req.post( genUrl(params), data = payload )
             return apiReq
@@ -34,7 +34,7 @@ class APIrequest:
             print(err)
 
     # PUT Req
-    async def put( dest: str="", payload: str="{}" ):
+    async def put( dest: str="", payload: str="" ):
         try:
             apiReq = req.put( genUrl(dest), data = payload ) # send the payload
             print(apiReq)
@@ -46,6 +46,12 @@ class APIrequest:
 
 
 class controller:
+    async def getLights():
+        return await APIrequest.get("/lights")
+
+    async def getLight(index: int=1):
+        return await APIrequest.get( "/lights/" + str(index) )
+
     async def toggleLight(index: int=1, isOn: bool=True):
         await APIrequest.put( "/lights/1/state", '{"on":' + boolToString(isOn) + '}' )
 
