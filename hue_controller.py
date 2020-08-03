@@ -14,26 +14,42 @@ def boolToString(v: bool): # To fix the dumb python syntax
     else:
         return "false"
 
-async def API_Request(method: str="GET", params: str="", body: str=""):
-    try:
-        apiReq = req.Request( method, genUrl(params) ) # initialize the request
-        apiReqPrep = apiReq.prepare() # prepair it
+class APIrequest:
+    # Get Req
+    async def get( dest: str="", payload: str="{}" ):
+        try:
+            apiReq = req.get( genUrl(dest), data = payload )
+            return apiReq
 
-        apiReqPrep.body = body # apply the body to the request
+        except req.exceptions.RequestException as err:
+            print(err)
 
-        apiSession = req.Session()
-        response = apiSession.send(apiReqPrep) # send it to the Hue bridge
+    # POST Req
+    async def post( dest: str="", payload: str="{}" ):
+        try:
+            apiReq = req.post( genUrl(params), data = payload )
+            return apiReq
 
-        print(response)
-        print(response.text)
-    except req.exceptions.RequestException as err:
-        raise SystemExit(err) # throw the error
+        except req.exceptions.RequestException as err:
+            print(err)
 
-async def setLightPower(index: int=1, on: bool=True):
-    await API_Request( "PUT", "/lights/" + str(index) + "/state", "{'on':" + boolToString(on) + "}" )
+    # PUT Req
+    async def put( dest: str="", payload: str="{}" ):
+        try:
+            apiReq = req.put( genUrl(dest), data = payload ) # send the payload
+            print(apiReq)
+            print(apiReq.text)
+            return apiReq
+
+        except req.exceptions.RequestException as err:
+            print(err)
+
+
+class controller:
+    async def toggleLight(index: int=1, isOn: bool=True):
+        await APIrequest.put( "/lights/1/state", '{"on":' + boolToString(isOn) + '}' )
 
 def testReq():
-    # loop.run_until_complete( API_Request("GET", "/lights/1") ) # get test
+    loop.run_until_complete( controller.toggleLight(1, True) ) # try to turn on/off a light
 
-    loop.run_until_complete( setLightPower(1, False) ) # try to turn on/off a light
     loop.close()
