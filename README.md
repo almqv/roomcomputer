@@ -5,8 +5,23 @@ Room-Computer is a simple room controller and is basically a controller for your
 	git clone https://github.com/E-Almqvist/roomcomputer.git
 This is written in python, so you will literally only have to clone this repository.
 
+### Configuration
+Create a copy of the file "default-config.py" and name it "config.py" then configure its contents to your needs.
+
+#### Hue Light Controller
+You can create presets in the "presets.py" file. Follow this syntax *(and Python syntax of course)*:
+```python
+PRESETS = {
+	"mypreset": {
+		"color": (178, 199, 255), # RGB, from 0-255
+		"brightness": 100 # from 0-255
+	},
+}
+```
+	
+
 ### Usage
-#### Hue Light Control
+#### Hue Light Controller
 	--Help page--
 	'hue' : Display this help page
 	'hue light (index)' ... : Specify light target, from 1-3
@@ -30,6 +45,6 @@ This is written in python, so you will literally only have to clone this reposit
 
 <h3 id="features">Features</h3>
 
-* Hue light control (hue_remote.py)
+* Hue Light Controller *(hue_remote.py)*
  
  And more to come!
