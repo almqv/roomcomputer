@@ -20,15 +20,11 @@ class APIrequest:
     async def get( dest: str="", payload: str="" ):
         try:
             apiReq = req.get( genUrl(dest), data = payload )
-            return apiReq
 
-        except req.exceptions.RequestException as err:
-            print(err)
+            if( apiReq.status_code != 200 ): # print out the error if the status code is not 200
+                print(apiReq)
+                print(apiReq.text)
 
-    # POST Req
-    async def post( dest: str="", payload: str="" ):
-        try:
-            apiReq = req.post( genUrl(params), data = payload )
             return apiReq
 
         except req.exceptions.RequestException as err:
@@ -38,8 +34,11 @@ class APIrequest:
     async def put( dest: str="", payload: str="" ):
         try:
             apiReq = req.put( genUrl(dest), data = payload ) # send the payload
-            print(apiReq)
-            print(apiReq.text)
+
+            if( apiReq.status_code != 200 ):
+                print(apiReq)
+                print(apiReq.text)
+
             return apiReq
 
         except req.exceptions.RequestException as err:
