@@ -1,29 +1,18 @@
 import requests as req # Used for HTTP requests for the Hue API
 import json # API uses JSON
 import asyncio # ASync stuff
+import time
+
+from lib.func import * # useful functions
 
 import config # Configuration for the controller (/config.py <- change this file)
 
 LIGHTS = {} # dictionary of all the lights
 
-
 loop = asyncio.get_event_loop() # ASync loop
 
 def genUrl(params: str):
     return "http://" + config.address + "/api/" + config.username + params
-
-boolStr = {
-    True: "true",
-    False: "false"
-}
-
-StrBool = { # because doing something else is too expensive 
-    "true": True,
-    "false": False
-}
-
-def boolToString(v: bool): # To fix the dumb python syntax
-    return boolStr[v]
 
 class APIrequest:
     # Get Req
@@ -58,14 +47,14 @@ class APIrequest:
 
 class controller:
 
-    # Info
+    # Internal get functions
     async def getLights():
         return await APIrequest.get("/lights")
 
     async def getLight(index: int=1):
         return await APIrequest.get( "/lights/" + str(index) )
 
-    # Lower level light manipulation
+    # Lower level light manipulation (async)
     async def toggleLight(index: int=1, isOn: bool=True):
         await APIrequest.put( "/lights/" + str(index) + "/state", '{"on":' + boolToString(isOn) + '}' )
 
@@ -73,7 +62,13 @@ class controller:
         for key in LIGHTS:
             await controller.toggleLight(key, isOn)
 
-    # Turning lights on/off
+    async def setLightRGB( index: int, r:int, g:int, b:int ):
+        h, s, v = rgbToHsv(r, g, b)
+        payload = '{"sat":' + str(s) + ', "bri":' + str(v) + ', "hue":' + str(h) + '}'
+
+        await APIrequest.put( "/lights/" + str(index) + "/state", payload )
+
+    # Normal functions
     def switchLight( index: int=1 ):
         key = LIGHTS.get(str(index))
         if(key):
@@ -81,28 +76,42 @@ class controller:
                 curPower = LIGHTS[str(index)]["state"]["on"]
                 loop.run_until_complete( controller.toggleLight(index, not curPower))
         else:
-            print("Error: Light index out of range")
+            print("Error: Light index '" + str(index) + "' out of range")
 
     def switchLights():
         for key in LIGHTS:
             controller.switchLight(key)
 
-    def Power(isOn: bool=True):
+    def setLightColor(index:int, r:int, g:int, b:int):
+        if( LIGHTS.get(str(index)) ):
+            loop.run_until_complete( controller.setLightRGB(index, r, g, b) )
+        else:
+            print("Error: Light index '" + str(index) + "' out of range")
+
+    def setAllLightsColor(r:int, g:int, b:int):
+        for key in LIGHTS:
+            controller.setLightColor(key, r, g, b)
+
+    def Power(isOn: bool=True): # Controlling the power of the lights
         loop.run_until_complete( controller.toggleLights(isOn) )
 
-    # Very important init function
+    # Controller "system" functions
+    def delay(n: int):
+        time.sleep(n)
+
     def init():
         jsonLights = loop.run_until_complete(APIrequest.get("/lights"))
+
         global LIGHTS
         LIGHTS = json.loads(jsonLights.text)
-        print(LIGHTS)
-        print("----------------")
+
+    def end():
+        loop.close()
+
 
 def testReq():
     controller.init()
-    controller.Power(False) # turn on all lights
+    controller.Power(True)
+    controller.setAllLightsColor( 255, 255, 255 )
 
-    #controller.switchLights()
-    # loop.run_until_complete( controller.toggleLight(1, True) ) # try to turn on/off a light
-
-    loop.close()
+    controller.end()
