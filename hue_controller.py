@@ -126,13 +126,12 @@ class controller:
         else:
             print("Error: Light index '" + str(index) + "' out of range")
 
-    def setPreset( presetDict ):
-        if( type(presetDict) is dict ):
-            for index, preset in presetDict.items():
-                controller.setLightPreset( index, preset )
-        elif( type(presetDict) is str ):
+    def setPreset( presetID:str, index:int=-1 ):
+        if( index == -1 ):
             for key in LIGHTS:
-                controller.setLightPreset( key, presetDict )
+                controller.setLightPreset( key, presetID )
+        else:
+            controller.setLightPreset( index, presetID )
 
 
     # Controller "system" functions

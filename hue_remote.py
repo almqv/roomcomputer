@@ -29,12 +29,13 @@ boolConvert = {
     "off": False
 }
 
-def parseCommand( cmd:list, pos:int, index:int=-1 ):
+def parseCommand( cmd:list, pos:int, i=-1 ):
+    index = int(i)
     if( cmd[pos] == "on" or cmd[pos] == "off" ):
         if( index == -1 ):
             hue.controller.Power( boolConvert[cmd[pos]] )
         else:
-            hue.controller.Power()
+            hue.controller.powerLight( index, boolConvert[cmd[pos]] )
 
     elif( cmd[pos] == "switch" ):
         if(index == -1):
@@ -42,7 +43,33 @@ def parseCommand( cmd:list, pos:int, index:int=-1 ):
         else:
             hue.controller.switchLight(index)
 
+    elif( cmd[pos] == "set" ):
+        if( cmd[pos+1] == "preset" ):
+            hue.controller.setPreset( cmd[pos+2], index )
+
+        #elif( cmd[pos+1] == "color" ):
+
+
+        #elif( cmd[pos+1] == "preset" ):
+
+
 def parseCommandline(): # this is the most spaghetti code I have ever written but it works and I do not intend to fix
     cmd = sys.argv
-    if( cmd[1] == "light" ):
-        index = cmd[2]
+    print(cmd)
+    if( len(cmd) > 1 ):
+        if( cmd[1] == "light" ):
+            index = cmd[2]
+            parseCommand( cmd, 3, index )
+
+        elif( cmd[1] == "lights" ):
+            parseCommand( cmd, 2 )
+    else:
+        help()
+
+
+def init():
+    hue.controller.init()
+    parseCommandline()
+    hue.controller.end()
+
+init()
