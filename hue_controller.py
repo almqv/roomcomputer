@@ -133,6 +133,8 @@ class controller:
         else:
             controller.setLightPreset( index, presetID )
 
+    def countLights():
+        return len(LIGHTS)
 
     # Controller "system" functions
     def delay(n:int):
