@@ -93,10 +93,13 @@ class controller:
     def setLightBrightness( index:int, b:int ):
         if( LIGHTS.get(str(index)) ):
             payload = '{"bri":' + str(b) + '}'
-            APIrequest.put( "/lights/" + str(index) + "/state", payload )
+            loop.run_until_complete( APIrequest.put( "/lights/" + str(index) + "/state", payload ) )
         else:
             print("Error: Light index '" + str(index) + "' out of range")
 
+    def setBrightness( b:int ):
+        for key in LIGHTS:
+            controller.setLightBrightness( key, b )
 
     def setAllLightsColor( r:int, g:int, b:int ):
         for key in LIGHTS:
@@ -106,19 +109,31 @@ class controller:
         loop.run_until_complete( controller.toggleLights(isOn) )
 
     # Presets
-    def setPreset(index:int, p:str):
+    def setLightPreset( index:int, p:str ):
         if( LIGHTS.get(str(index)) ):
             if( PRESETS.get(p) ):
                 preset = PRESETS[p]
                 r, g, b = preset["color"]
+                brightness = preset["brightness"]
+
                 controller.setLightColor( index, r, g, b )
+                controller.setLightBrightness( index, brightness )
             else:
                 print("Error: Unknown preset '" + p + "'")
         else:
             print("Error: Light index '" + str(index) + "' out of range")
 
+    def setPreset( presetDict ):
+        if( type(presetDict) is dict ):
+            for index, preset in presetDict.items():
+                controller.setLightPreset( index, preset )
+        elif( type(presetDict) is str ):
+            for key in LIGHTS:
+                controller.setLightPreset( key, presetDict )
+
+
     # Controller "system" functions
-    def delay(n: int):
+    def delay(n:int):
         time.sleep(n)
 
     def init():
@@ -126,13 +141,6 @@ class controller:
 
         global LIGHTS
         LIGHTS = json.loads(jsonLights.text)
-        print(LIGHTS)
 
     def end():
         loop.close()
-
-def testReq():
-    controller.init()
-    controller.Power(True)
-    controller.setAllLightsColor( 178, 199, 255 )
-    controller.end()
