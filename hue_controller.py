@@ -82,6 +82,7 @@ class controller:
         for key in LIGHTS:
             controller.switchLight(key)
 
+    # Light color
     def setLightColor(index:int, r:int, g:int, b:int):
         if( LIGHTS.get(str(index)) ):
             loop.run_until_complete( controller.setLightRGB(index, r, g, b) )
@@ -104,6 +105,7 @@ class controller:
 
         global LIGHTS
         LIGHTS = json.loads(jsonLights.text)
+        print(LIGHTS)
 
     def end():
         loop.close()
@@ -112,6 +114,5 @@ class controller:
 def testReq():
     controller.init()
     controller.Power(True)
-    controller.setAllLightsColor( 255, 255, 255 )
-
+    controller.setAllLightsColor( 178, 199, 255 )
     controller.end()
