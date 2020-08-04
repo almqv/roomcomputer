@@ -6,6 +6,7 @@ import time
 from lib.func import * # useful functions
 
 import config # Configuration for the controller (/config.py <- change this file)
+from presets import * # presets for the lights
 
 LIGHTS = {} # dictionary of all the lights
 
@@ -82,19 +83,39 @@ class controller:
         for key in LIGHTS:
             controller.switchLight(key)
 
-    # Light color
-    def setLightColor(index:int, r:int, g:int, b:int):
+    # Light control
+    def setLightColor( index:int, r:int, g:int, b:int ):
         if( LIGHTS.get(str(index)) ):
             loop.run_until_complete( controller.setLightRGB(index, r, g, b) )
         else:
             print("Error: Light index '" + str(index) + "' out of range")
 
-    def setAllLightsColor(r:int, g:int, b:int):
+    def setLightBrightness( index:int, b:int ):
+        if( LIGHTS.get(str(index)) ):
+            payload = '{"bri":' + str(b) + '}'
+            APIrequest.put( "/lights/" + str(index) + "/state", payload )
+        else:
+            print("Error: Light index '" + str(index) + "' out of range")
+
+
+    def setAllLightsColor( r:int, g:int, b:int ):
         for key in LIGHTS:
-            controller.setLightColor(key, r, g, b)
+            controller.setLightColor( key, r, g, b )
 
     def Power(isOn: bool=True): # Controlling the power of the lights
         loop.run_until_complete( controller.toggleLights(isOn) )
+
+    # Presets
+    def setPreset(index:int, p:str):
+        if( LIGHTS.get(str(index)) ):
+            if( PRESETS.get(p) ):
+                preset = PRESETS[p]
+                r, g, b = preset["color"]
+                controller.setLightColor( index, r, g, b )
+            else:
+                print("Error: Unknown preset '" + p + "'")
+        else:
+            print("Error: Light index '" + str(index) + "' out of range")
 
     # Controller "system" functions
     def delay(n: int):
@@ -109,7 +130,6 @@ class controller:
 
     def end():
         loop.close()
-
 
 def testReq():
     controller.init()
