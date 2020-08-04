@@ -105,8 +105,11 @@ class controller:
         for key in LIGHTS:
             controller.setLightColor( key, r, g, b )
 
-    def Power(isOn: bool=True): # Controlling the power of the lights
+    def Power(isOn:bool=True): # Controlling the power of the lights
         loop.run_until_complete( controller.toggleLights(isOn) )
+
+    def powerLight( index:int, isOn:bool=True ):
+        loop.run_until_complete( controller.toggleLight( index, isOn ) )
 
     # Presets
     def setLightPreset( index:int, p:str ):
