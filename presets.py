@@ -6,6 +6,11 @@ PRESETS = {
         "brightness": 255
     },
 
+    "default-dim": {
+        "color": (178, 199, 255),
+        "brightness": 111
+    },
+
     "red": {
         "color": (255, 0, 0),
         "brightness": 255
