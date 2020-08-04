@@ -29,6 +29,8 @@ boolConvert = {
     "off": False
 }
 
+# this is the most spaghetti-ish code I have ever written but it works
+
 def parseCommand( cmd:list, pos:int, i=-1 ):
     index = int(i)
     try:
@@ -83,9 +85,9 @@ def parseCommand( cmd:list, pos:int, i=-1 ):
         help() # display the help page if parameters are missing (it will give out an IndexError)
 
 
-def parseCommandline(): # this is the most spaghetti code I have ever written but it works and I do not intend to fix
+def parseCommandline():
     cmd = sys.argv
-    print(cmd)
+
     if( len(cmd) > 1 ):
         if( cmd[1] == "light" ):
             parseCommand( cmd, 3, cmd[2] )
@@ -101,4 +103,4 @@ def init():
     parseCommandline()
     hue.controller.end() # also to end it
 
-init()
+init() # actually call the init function
