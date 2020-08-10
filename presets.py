@@ -11,6 +11,11 @@ PRESETS = {
         "brightness": 111
     },
 
+    "dim": {
+        "color": (178, 199, 255),
+        "brightness": 80
+    },
+
     "red": {
         "color": (255, 0, 0),
         "brightness": 255
