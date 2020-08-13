@@ -6,7 +6,7 @@ PRESETS = {
         "brightness": 255
     },
 
-    "default-dim": {
+    "dim": {
         "color": (178, 199, 255),
         "brightness": 111
     },
@@ -31,9 +31,14 @@ PRESETS = {
         "brightness": 255
     },
 
+    "ice" : {
+        "color": ( 80, 100, 255 ),
+        "brightness": 120
+    },
+
     "sleep": {
         "color": (185, 155, 25),
-        "brightness": 80
+        "brightness": 60
     }
 
 }
