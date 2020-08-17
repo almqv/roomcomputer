@@ -81,8 +81,9 @@ def parseCommand( cmd:list, pos:int, i=-1 ):
                     return
         help() # display help if function did nothing
 
-    except (RuntimeError, TypeError, NameError, IndexError):
+    except (RuntimeError, TypeError, NameError, IndexError) as err:
         help() # display the help page if parameters are missing (it will give out an IndexError)
+        print( "\n\nError: " + str(err) )
 
 
 def parseCommandline():

@@ -126,11 +126,14 @@ class controller:
             print("Error: Light index '" + str(index) + "' out of range")
 
     def setPreset( presetID:str, index:int=-1 ):
-        if( index == -1 ):
-            for key in LIGHTS:
-                controller.setLightPreset( key, presetID )
+        if( PRESETS.get(presetID) ):
+            if( index == -1 ):
+                for key in LIGHTS:
+                    controller.setLightPreset( key, presetID )
+            else:
+                controller.setLightPreset( index, presetID )
         else:
-            controller.setLightPreset( index, presetID )
+            print("Error: Unknown preset '" + presetID + "'")
 
     def countLights():
         return len(LIGHTS)
