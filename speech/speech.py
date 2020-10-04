@@ -5,8 +5,9 @@ class sr_microphone(object):
 
 	muted = True
 
-	def start(self): # use the object as a generator
-		while( not self.muted ):
+	def getInput(self): # use the object as a generator
+		print("Awaiting input")
+		if( not self.muted ):
 			try:
 				with sr.Microphone() as src:
 					self.recognizer.adjust_for_ambient_noise( src, duration=0.2 ) # adjust for ambient noise
@@ -32,4 +33,4 @@ class sr_microphone(object):
 # Small test
 voice = sr_microphone()
 voice.setMuted(False)
-voice.start()
+print( voice.getInput() )
