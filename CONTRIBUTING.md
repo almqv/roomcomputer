@@ -5,4 +5,6 @@
 	- Make actual quality PRs, no +1 etc.
 
 ## General format rules
-	- Use 4 spaces for indentation
+	- Use TABS for indentation.
+	- Try to follow the layout of the code.
+	- Follow the file structure, don't deviate from it.
