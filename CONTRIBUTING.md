@@ -2,6 +2,7 @@
 
 ## Pull-request rules
 	- Create an issue before adding a new feature.
+	- Always create a new branch for your issue or change.
 	- Make actual quality PRs, no +1 etc.
 
 ## General format rules
