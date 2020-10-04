@@ -3,27 +3,33 @@ import speech_recognition as sr
 class sr_microphone(object):
 	recognizer = sr.Recognizer()
 
-	muted = False
+	muted = True
 
-	def __init__(self): # use the object as a generator
-		while( not muted ):
+	def start(self): # use the object as a generator
+		while( not self.muted ):
 			try:
 				with sr.Microphone() as src:
-					recognizer.adjust_for_ambient_noise( src, duration=0.2 ) # adjust for ambient noise
+					self.recognizer.adjust_for_ambient_noise( src, duration=0.2 ) # adjust for ambient noise
 
-					audio = recognizer.listen(src)
+					audio = self.recognizer.listen(src)
 
 					# Make audio -> text
-					return (recognizer.recognize_google( audio )).lower() # use googles recognizer and lower its output
+					return (self.recognizer.recognize_google( audio )).lower() # use googles recognizer and lower its output
 
 			except sr.RequestError as err:
-				print("Unable to request results: {0}".format(e))
+				print("Unable to request results: {0}".format(err))
 
-			except sr.UnknownValueError:
-				print("Unknown Error")
+			except sr.UnknownValueError as err:
+				print("Unknown Error: {0}".format(err))
 
 	def setMuted( self, setm: bool=True ):
 		self.muted = setm
 
 	def switchMute( self ):
 		self.setMuted( not self.muted )
+
+
+# Small test
+voice = sr_microphone()
+voice.setMuted(False)
+voice.start()
