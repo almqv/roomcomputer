@@ -1,27 +1,37 @@
 import speech_recognition as sr
+import io
+from google.cloud import speech as sp
 
-class sr_microphone(object):
+class voiceInput(object):
 	recognizer = sr.Recognizer()
+	commandFunc = None
 
 	muted = True
 
-	def getInput(self): # use the object as a generator
-		print("Awaiting input")
-		if( not self.muted ):
-			try:
-				with sr.Microphone() as src:
-					self.recognizer.adjust_for_ambient_noise( src, duration=0.2 ) # adjust for ambient noise
+	def transcribe_voice( self, streamFile ):
+		cl = sp.SpeechClient()
 
-					audio = self.recognizer.listen(src)
+		with io.open( streamFile, "rb" ) as audioFile:
+			cont = audioFile.read()
 
-					# Make audio -> text
-					return (self.recognizer.recognize_google( audio )).lower() # use googles recognizer and lower its output
+		stream = [cont]
+		req = ( sp.StreamingRecognizeRequest(audio_content=chunk) for chunk in stream )
 
-			except sr.RequestError as err:
-				print("Unable to request results: {0}".format(err))
+		conf = sp.RecognitionConfig(
+			encoding = sp.RecognitionConfig.AudioEncoding.LINEAR16,
+			sample_rate_hertz = 16000,
+			language_code = "en-US"
+		)
 
-			except sr.UnknownValueError as err:
-				print("Unknown Error: {0}".format(err))
+
+		streamConf = sp.StreamingRecognitionConfig(config=conf)
+
+		responses = cl.streaming_recognize( steamConf, req )
+
+		for res in responses:
+			for result in res.results:
+				for alt in result.alternatives:
+					print(alt.transcript)
 
 	def setMuted( self, setm: bool=True ):
 		self.muted = setm
@@ -30,7 +40,5 @@ class sr_microphone(object):
 		self.setMuted( not self.muted )
 
 
-# Small test
-voice = sr_microphone()
-voice.setMuted(False)
-print( voice.getInput() )
+vc = voiceInput()
+vc.transcribe_voice( "./stream.txt" )
