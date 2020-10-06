@@ -31,8 +31,7 @@ boolConvert = {
 
 # this is the most spaghetti-ish code I have ever written but it works
 
-def parseCommand( cmd:list, pos:int, i=-1, displayHelp=True ):
-	index = int(i)
+def parseCommand( cmd:list, pos:int, index=-1, displayHelp=True ):
 	try:
 		if( cmd[pos] == "on" or cmd[pos] == "off" ):
 			if( index == -1 ):
@@ -94,6 +93,7 @@ def parseCommandline( cmd=sys.argv, needHelp=True ):
 			parseCommand( cmd, 3, cmd[2], displayHelp=needHelp )
 
 		elif( cmd[1] == "lights" ):
+			print("gothere1")
 			parseCommand( cmd, 2, displayHelp=needHelp )
-	else:
+	elif( needHelp ):
 		help()
