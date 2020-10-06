@@ -97,11 +97,3 @@ def parseCommandline():
 			parseCommand( cmd, 2 )
 	else:
 		help()
-
-
-def init():
-	hue.controller.init() # very important to initialize the controller
-	parseCommandline()
-	hue.controller.end() # also to end it
-
-init() # actually call the init function

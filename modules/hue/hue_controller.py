@@ -3,10 +3,10 @@ import json # API uses JSON
 import asyncio # ASync stuff
 import time
 
-from lib.func import * # useful functions
+from .lib.func import * # useful functions
 
-import config # Configuration for the controller (/config.py <- change this file)
-from presets import * # presets for the lights
+#import .config as config # Configuration for the controller (/config.py <- change this file)
+from .presets import * # presets for the lights
 
 LIGHTS = {} # dictionary of all the lights
 
