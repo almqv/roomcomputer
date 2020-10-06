@@ -5,25 +5,28 @@ class voiceInput(object):
 
 	muted = True
 
-	def voiceToText( self, deviceIndex=30 ):
-		try:
-			with sr.Microphone( deviceIndex ) as src:
-				self.recognizer.adjust_for_ambient_noise( src, 0.2 )
-				print("Listening...")
-				audio = self.recognizer.listen( src, phrase_time_limit=5 )
-				print("Thinking...")
-				text = self.recognizer.recognize_google(audio)
-				print(text)
+	# "Error codes", can be used to check stuff
+	what = "??"
+	error = "ERROR"
 
-				return self.voiceToText(deviceIndex)
+	def start( self, deviceIndex=30 ): # a generator for everything that is said
+		while( True ): # loop 
+			try:
+				if( not self.muted ): # this thing is not the NSA
+					with sr.Microphone( deviceIndex ) as src:
+						self.recognizer.adjust_for_ambient_noise( src, 0.2 )
+						print("Listening...")
+						audio = self.recognizer.listen( src, phrase_time_limit=5 )
+						print("Thinking...")
+						text = self.recognizer.recognize_google(audio)
+						yield text
 
-		except sr.RequestError as err:
-			print("Unable to request results: {0}".format(err))
-			return self.voiceToText(deviceIndex)
+			except sr.RequestError as err:
+				print("Unable to request results: {0}".format(err))
+				yield self.error
 
-		except sr.UnknownValueError:
-			print("????")
-			return self.voiceToText(deviceIndex)
+			except sr.UnknownValueError:
+				yield self.what
 
 
 	def setMuted( self, setm: bool=True ):
@@ -32,7 +35,3 @@ class voiceInput(object):
 	def switchMute( self ):
 		self.setMuted( not self.muted )
 
-
-voice = voiceInput()
-voice.setMuted(False)
-print( "out:", voice.voiceToText() )
