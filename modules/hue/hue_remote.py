@@ -93,7 +93,6 @@ def parseCommandline( cmd=sys.argv, needHelp=True ):
 			parseCommand( cmd, 3, cmd[2], displayHelp=needHelp )
 
 		elif( cmd[1] == "lights" ):
-			print("gothere1")
 			parseCommand( cmd, 2, displayHelp=needHelp )
 	elif( needHelp ):
 		help()
