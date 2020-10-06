@@ -1,12 +1,12 @@
 import json
 
 def readconfig(path):
-	#try:
-	with open(path) as cfg:
-		data = json.load(cfg)
+	try:
+		with open(path) as cfg:
+			data = json.load(cfg)
 
-		return data
+			return data
 
-	#except:
-		#print("[Error] Something went wrong reading the configuration file.")
-		#print("--", path)
+	except:
+		print("[Error] Something went wrong reading the configuration file.")
+		print("--", path)
