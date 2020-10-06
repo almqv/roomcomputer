@@ -3,7 +3,8 @@ Room-Computer is a simple room controller and is basically a controller for your
 
 ### Installation
 	git clone https://github.com/E-Almqvist/roomcomputer.git
-This is written in python, so you will literally only have to clone this repository.
+	pip install -r requirements.txt
+This is written in python, so you will literally only have to clone this repository and install the dependencies.
 
 ### Configuration
 Create a copy of the file "default-config.py" and name it "config.py" then configure its contents to your needs.
