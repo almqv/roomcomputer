@@ -8,7 +8,6 @@ class speech_daemon(object):
 
 	def __init__(self, deviceIndex=30):
 		voiceInpObj = voiceInput()
-
 		voiceInpObj.setMuted(False)
 
 		voiceInpObj.start(deviceIndex)
