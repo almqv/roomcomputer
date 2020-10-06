@@ -1,6 +1,4 @@
 import speech_recognition as sr
-import io
-from google.cloud import speech as sp
 
 class voiceInput(object):
 	recognizer = sr.Recognizer()
