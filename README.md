@@ -10,10 +10,10 @@ Run the `setup.sh` script in order to copy the necessary files to `~/.config/roo
 
 #### HUE Lights presets
 You can create presets in the `~/.config/roomcomputer/presets.json` file. Follow this syntax *(and JSON syntax of course)*:
-```python
-PRESETS = {
+```json
+{
 	"mypreset": {
-		"color": (178, 199, 255), # RGB, from 0-255
+		"color": [178, 199, 255], # RGB, from 0-255
 		"brightness": 100 # from 0-255
 	},
 }
