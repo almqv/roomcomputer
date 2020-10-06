@@ -19,9 +19,11 @@ class voiceInput(object):
 
 		except sr.RequestError as err:
 			print("Unable to request results: {0}".format(err))
+			return self.voiceToText(deviceIndex)
 
-		except sr.UnknownValueError as err:
-			print("Unknown Error: {0}".format(err))
+		except sr.UnknownValueError:
+			print("????")
+			return self.voiceToText(deviceIndex)
 
 
 	def setMuted( self, setm: bool=True ):
