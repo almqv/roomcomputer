@@ -9,9 +9,13 @@ class voiceInput(object):
 		try:
 			with sr.Microphone( deviceIndex ) as src:
 				self.recognizer.adjust_for_ambient_noise( src, 0.2 )
-				audio = self.recognizer.listen( src )
+				print("Listening...")
+				audio = self.recognizer.listen( src, phrase_time_limit=5 )
+				print("Thinking...")
 				text = self.recognizer.recognize_google(audio)
 				print(text)
+
+				return self.voiceToText(deviceIndex)
 
 		except sr.RequestError as err:
 			print("Unable to request results: {0}".format(err))
