@@ -3,7 +3,7 @@
 
 import sys
 
-import hue_controller as hue # Actual controller 
+from modules.hue import hue_controller as hue # Actual controller 
 
 cmd = "hue"
 
@@ -31,8 +31,7 @@ boolConvert = {
 
 # this is the most spaghetti-ish code I have ever written but it works
 
-def parseCommand( cmd:list, pos:int, i=-1 ):
-	index = int(i)
+def parseCommand( cmd:list, pos:int, index=-1, displayHelp=True ):
 	try:
 		if( cmd[pos] == "on" or cmd[pos] == "off" ):
 			if( index == -1 ):
@@ -82,26 +81,18 @@ def parseCommand( cmd:list, pos:int, i=-1 ):
 		help() # display help if function did nothing
 
 	except (RuntimeError, TypeError, NameError, IndexError) as err:
-		help() # display the help page if parameters are missing (it will give out an IndexError)
+		if(displayHelp):
+			help() # display the help page if parameters are missing (it will give out an IndexError)
+
 		print( "\n\nError: " + str(err) )
 
 
-def parseCommandline():
-	cmd = sys.argv
-
+def parseCommandline( cmd=sys.argv, needHelp=True ):
 	if( len(cmd) > 1 ):
 		if( cmd[1] == "light" ):
-			parseCommand( cmd, 3, cmd[2] )
+			parseCommand( cmd, 3, cmd[2], displayHelp=needHelp )
 
 		elif( cmd[1] == "lights" ):
-			parseCommand( cmd, 2 )
-	else:
+			parseCommand( cmd, 2, displayHelp=needHelp )
+	elif( needHelp ):
 		help()
-
-
-def init():
-	hue.controller.init() # very important to initialize the controller
-	parseCommandline()
-	hue.controller.end() # also to end it
-
-init() # actually call the init function

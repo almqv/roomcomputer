@@ -3,17 +3,17 @@ import json # API uses JSON
 import asyncio # ASync stuff
 import time
 
-from lib.func import * # useful functions
+from .lib.func import * # useful functions
 
-import config # Configuration for the controller (/config.py <- change this file)
-from presets import * # presets for the lights
+from .config import * # Configuration for the controller (/config.py <- change this file)
+from .presets import * # presets for the lights
 
 LIGHTS = {} # dictionary of all the lights
 
 loop = asyncio.get_event_loop() # ASync loop
 
 def genUrl(params: str):
-	return "http://" + config.address + "/api/" + config.username + params
+	return "http://" + hue_config.address + "/api/" + hue_config.username + params
 
 class APIrequest:
 	# Get Req
