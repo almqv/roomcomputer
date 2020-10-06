@@ -4,6 +4,7 @@
 		"username": ""
 	},
 	"speech": {
-		"device_index": 30
+		"device_index": 30,
+		"prefixes": ["computer", "computers"]
 	}
 }
