@@ -4,9 +4,9 @@ from modules.hue.hue_controller import controller
 from modules.hue.hue_remote import parseCommandline
 
 def init():
-	hue.controller.init() # very important to initialize the controller
+	controller.init() # very important to initialize the controller
 	parseCommandline()
-	hue.controller.end() # also to end it
+	controller.end() # also to end it
 
 if __name__ == "__main__":
 	init()
