@@ -1,6 +1,5 @@
 # Presets goes in here
 PRESETS = {
-
     "default": {
         "color": (178, 199, 255),
         "brightness": 255
@@ -40,5 +39,4 @@ PRESETS = {
         "color": (185, 155, 25),
         "brightness": 60
     }
-
 }
