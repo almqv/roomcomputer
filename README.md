@@ -13,8 +13,8 @@ You can create presets in the `~/.config/roomcomputer/presets.json` file. Follow
 ```json
 {
 	"mypreset": {
-		"color": [178, 199, 255], # RGB, from 0-255
-		"brightness": 100 # from 0-255
+		"color": [178, 199, 255],
+		"brightness": 100
 	},
 }
 ```
