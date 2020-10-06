@@ -1,0 +1,10 @@
+{
+	"hue": {
+		"address": "",
+		"username": ""
+	},
+	"speech": {
+		"device_index": 30,
+		"prefixes": ["computer", "computers"]
+	}
+}
