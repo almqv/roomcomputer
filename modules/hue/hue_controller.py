@@ -5,15 +5,20 @@ import time
 
 from .lib.func import * # useful functions
 
-from .config import * # Configuration for the controller (/config.py <- change this file)
-from .presets import * # presets for the lights
+from modules.configloader.loader import readconfig # used to read the config files
+from os.path import expanduser # to get the home dir
+
+homedir = expanduser("~") # get the home directory of the current user
 
 LIGHTS = {} # dictionary of all the lights
+CONFIG = {} # the configuration 
+PRESETS = {} # the presets
+PRE_URL = "" # prefix 
 
 loop = asyncio.get_event_loop() # ASync loop
 
 def genUrl(params: str):
-	return "http://" + hue_config.address + "/api/" + hue_config.username + params
+	return PRE_URL + params
 
 class APIrequest:
 	# Get Req
@@ -142,9 +147,20 @@ class controller:
 	def delay(n:int):
 		time.sleep(n)
 
-	def init():
-		jsonLights = loop.run_until_complete(APIrequest.get("/lights"))
+	def init( cfgPath="{0}/.config/roomcomputer/config.json".format(homedir), presetPath="{0}/.config/roomcomputer/presets.json".format(homedir) ):
+		config = readconfig(cfgPath)
+		presets = readconfig(presetPath)
 
+		global CONFIG
+		CONFIG = config["hue"]
+
+		global PRESETS
+		PRESETS = presets
+
+		global PRE_URL
+		PRE_URL = "http://" + CONFIG["address"] + "/api/" + CONFIG["username"]
+
+		jsonLights = loop.run_until_complete(APIrequest.get("/lights"))
 		global LIGHTS
 		LIGHTS = json.loads(jsonLights.text)
 
