@@ -30,8 +30,8 @@ PRESETS = {
         "brightness": 255
     },
 
-    "ice": {
-        "color": (80, 100, 255),
+    "ice" : {
+        "color": ( 80, 100, 255 ),
         "brightness": 120
     },
 
