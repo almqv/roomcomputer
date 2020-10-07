@@ -3,25 +3,25 @@ Room-Computer is a simple room controller and is basically a controller for your
 
 ### Installation
 	git clone https://github.com/E-Almqvist/roomcomputer.git
-This is written in python, so you will literally only have to clone this repository.
+	pip install -r requirements.txt
 
-### Configuration
-Create a copy of the file "default-config.py" and name it "config.py" then configure its contents to your needs.
+### Setup and Configuration
+Run the `setup.sh` script in order to copy the necessary files to `~/.config/roomcomputer/`. If you are planning to create a service for the `speech_daemon.py` with systemd; then you can specify its configuration file as the first argument: `speech_daemon.py /path/to/config/config.json`.
 
-#### Hue Light Controller
-You can create presets in the "presets.py" file. Follow this syntax *(and Python syntax of course)*:
-```python
-PRESETS = {
+#### HUE Lights presets
+You can create presets in the `~/.config/roomcomputer/presets.json` file. Follow this syntax *(and JSON syntax of course)*:
+```json
+{
 	"mypreset": {
-		"color": (178, 199, 255), # RGB, from 0-255
-		"brightness": 100 # from 0-255
+		"color": [178, 199, 255],
+		"brightness": 100
 	},
 }
 ```
 	
 
 ### Usage
-#### Hue Light Controller
+#### HUE Remote
 	--Help page--
 	'hue' : Display this help page
 	'hue light (index)' ... : Specify light target, from 1-3
@@ -40,11 +40,12 @@ PRESETS = {
 	'hue lights set color 255 255 255' : Set all lights colors to white
 
 -----------------
-	For convenience, you can create an alias for the script file. Append this to your shells rc file:
-	alias hue="/path/to/the/cloned/repo/hue_remote.py"
+For convenience, you can create an alias for the script file. Append this to your shells rc file:
+`alias hue="/path/to/the/cloned/repo/hue_cmd.py"`
 
 <h3 id="features">Features</h3>
 
-* Hue Light Controller *(hue_remote.py)*
+* HUE Light Controller (command-line) `hue_cmd.py)`
+* HUE Light Controller (voice daemon) `speech_daemon.py`
  
  And more to come!
