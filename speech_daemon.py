@@ -15,13 +15,11 @@ CONFIG = {}
 
 class speech_daemon(object):
 	voiceInpObj = None
-	deviceIndex = 30
+	deviceIndex = None
 
-	def __init__(self, deviceIndex=30):
+	def __init__(self):
 		self.voiceInpObj = voiceInput()
 		self.voiceInpObj.setMuted(False)
-
-		self.deviceIndex = deviceIndex
 
 	def loadconfig(self):
 		path = homedir + "/.config/roomcomputer/config.json"
@@ -35,6 +33,8 @@ class speech_daemon(object):
 
 		global CONFIG
 		CONFIG = cfg
+
+		self.deviceIndex = CONFIG["speech"]["device_index"]
 
 	def start(self):
 		controller.init()
