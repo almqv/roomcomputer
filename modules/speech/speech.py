@@ -9,7 +9,7 @@ class voiceInput(object):
 	what = "??"
 	error = "ERROR"
 
-	def start( self, deviceIndex=30 ): # a generator for everything that is said
+	def start( self, deviceIndex=None ): # a generator for everything that is said
 		while( True ): # loop 
 			try:
 				if( not self.muted ): # this thing is not the NSA
