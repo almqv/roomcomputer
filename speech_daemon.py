@@ -13,7 +13,7 @@ homedir = expanduser("~")
 
 CONFIG = {}
 
-class speech_daemon(object):
+class speech_daemon:
 	voiceInpObj = None
 	deviceIndex = None
 

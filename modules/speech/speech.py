@@ -1,6 +1,6 @@
 import speech_recognition as sr
 
-class voiceInput(object):
+class voiceInput:
 	recognizer = sr.Recognizer()
 
 	muted = True
