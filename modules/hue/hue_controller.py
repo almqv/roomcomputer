@@ -10,6 +10,8 @@ from os.path import expanduser # to get the home dir
 
 homedir = expanduser("~") # get the home directory of the current user
 
+IP_FETCH_URL = "https://discovery.meethue.com/" # returns the HUE bridges local IP
+
 LIGHTS = {} # dictionary of all the lights
 CONFIG = {} # the configuration 
 PRESETS = {} # the presets
@@ -147,7 +149,7 @@ class controller:
 	def delay(n:int):
 		time.sleep(n)
 
-	def init( cfgPath="{0}/.config/roomcomputer/config.json".format(homedir), presetPath="{0}/.config/roomcomputer/presets.json".format(homedir) ):
+	def init( cfgPath=f"{homedir}/.config/roomcomputer/config.json", presetPath=f"{homedir}/.config/roomcomputer/presets.json" ):
 		config = readconfig(cfgPath)
 		presets = readconfig(presetPath)
 
@@ -156,9 +158,13 @@ class controller:
 
 		global PRESETS
 		PRESETS = presets
-
+		
 		global PRE_URL
-		PRE_URL = "http://" + CONFIG["address"] + "/api/" + CONFIG["username"]
+		if( "address" in CONFIG ): # check if there is an address
+			PRE_URL = f"http://{CONFIG['address']}/api/{CONFIG['username']}"
+		else:
+			# Fetch the address instead
+		
 
 		jsonLights = loop.run_until_complete(APIrequest.get("/lights"))
 		global LIGHTS
