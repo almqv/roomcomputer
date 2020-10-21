@@ -23,6 +23,17 @@ def genUrl(params: str):
 	return PRE_URL + params
 
 class APIrequest:
+
+	async def fetchBridgeIP():
+		try:
+			apiReq = req.get(IP_FETCH_URL)
+			return apiReq.json()["internalipaddress"]
+
+		except req.exceptions.RequestException as err:
+			print("Unable to fetch HUE Bridge IP!")
+			print(err)
+			exit()
+
 	# Get Req
 	async def get( dest: str="", payload: str="" ):
 		try:
@@ -160,10 +171,14 @@ class controller:
 		PRESETS = presets
 		
 		global PRE_URL
+		PRE_URL = "https://"
+
 		if( "address" in CONFIG ): # check if there is an address
-			PRE_URL = f"http://{CONFIG['address']}/api/{CONFIG['username']}"
-		else:
-			# Fetch the address instead
+			PRE_URL += f"{CONFIG['address']}"
+		else: # else then fetch it
+			PRE_URL += APIrequest.fetchBridgeIP()
+
+		PRE_URL += f"/api/{CONFIG['username']}" # append the rest
 		
 
 		jsonLights = loop.run_until_complete(APIrequest.get("/lights"))
