@@ -10,24 +10,25 @@ from os.path import expanduser # to get the home dir
 
 homedir = expanduser("~") # get the home directory of the current user
 
-IP_FETCH_URL = "https://discovery.meethue.com/" # returns the HUE bridges local IP
+IP_FETCH_URL = "http://discovery.meethue.com/" # returns the HUE bridges local IP
 
 LIGHTS = {} # dictionary of all the lights
 CONFIG = {} # the configuration 
 PRESETS = {} # the presets
-PRE_URL = "" # prefix 
+BRIDGE_ADDRESS = ""
 
 loop = asyncio.get_event_loop() # ASync loop
 
 def genUrl(params: str):
-	return PRE_URL + params
+	return f"http://{BRIDGE_ADDRESS}/api/{CONFIG['username']}{params}" 
 
 class APIrequest:
 
-	async def fetchBridgeIP():
+	def fetchBridgeIP():
 		try:
 			apiReq = req.get(IP_FETCH_URL)
-			return apiReq.json()["internalipaddress"]
+			data = apiReq.json()
+			return data[0]["internalipaddress"]
 
 		except req.exceptions.RequestException as err:
 			print("Unable to fetch HUE Bridge IP!")
@@ -170,16 +171,12 @@ class controller:
 		global PRESETS
 		PRESETS = presets
 		
-		global PRE_URL
-		PRE_URL = "https://"
-
-		if( "address" in CONFIG ): # check if there is an address
-			PRE_URL += f"{CONFIG['address']}"
-		else: # else then fetch it
-			PRE_URL += APIrequest.fetchBridgeIP()
-
-		PRE_URL += f"/api/{CONFIG['username']}" # append the rest
-		
+		global BRIDGE_ADDRESS
+		# If there is no address in the config then get it via the API
+		if( "address" in CONFIG ):
+			BRIDGE_ADDRESS = CONFIG["address"]
+		else:
+			BRIDGE_ADDRESS = APIrequest.fetchBridgeIP()
 
 		jsonLights = loop.run_until_complete(APIrequest.get("/lights"))
 		global LIGHTS
