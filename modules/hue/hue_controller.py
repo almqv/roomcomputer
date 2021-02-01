@@ -10,17 +10,31 @@ from os.path import expanduser # to get the home dir
 
 homedir = expanduser("~") # get the home directory of the current user
 
+IP_FETCH_URL = "http://discovery.meethue.com/" # returns the HUE bridges local IP
+
 LIGHTS = {} # dictionary of all the lights
 CONFIG = {} # the configuration 
 PRESETS = {} # the presets
-PRE_URL = "" # prefix 
+BRIDGE_ADDRESS = ""
 
 loop = asyncio.get_event_loop() # ASync loop
 
 def genUrl(params: str):
-	return PRE_URL + params
+	return f"http://{BRIDGE_ADDRESS}/api/{CONFIG['username']}{params}" 
 
 class APIrequest:
+
+	def fetchBridgeIP():
+		try:
+			apiReq = req.get(IP_FETCH_URL)
+			data = apiReq.json()
+			return data[0]["internalipaddress"]
+
+		except req.exceptions.RequestException as err:
+			print("Unable to fetch HUE Bridge IP!")
+			print(err)
+			exit()
+
 	# Get Req
 	async def get( dest: str="", payload: str="" ):
 		try:
@@ -147,7 +161,7 @@ class controller:
 	def delay(n:int):
 		time.sleep(n)
 
-	def init( cfgPath="{0}/.config/roomcomputer/config.json".format(homedir), presetPath="{0}/.config/roomcomputer/presets.json".format(homedir) ):
+	def init( cfgPath=f"{homedir}/.config/roomcomputer/config.json", presetPath=f"{homedir}/.config/roomcomputer/presets.json" ):
 		config = readconfig(cfgPath)
 		presets = readconfig(presetPath)
 
@@ -156,9 +170,13 @@ class controller:
 
 		global PRESETS
 		PRESETS = presets
-
-		global PRE_URL
-		PRE_URL = "http://" + CONFIG["address"] + "/api/" + CONFIG["username"]
+		
+		global BRIDGE_ADDRESS
+		# If there is no address in the config then get it via the API
+		if( "address" in CONFIG ):
+			BRIDGE_ADDRESS = CONFIG["address"]
+		else:
+			BRIDGE_ADDRESS = APIrequest.fetchBridgeIP()
 
 		jsonLights = loop.run_until_complete(APIrequest.get("/lights"))
 		global LIGHTS
