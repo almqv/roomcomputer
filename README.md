@@ -4,6 +4,7 @@ Room-Computer is a simple room controller and is basically a controller for your
 ### Installation
 	git clone https://github.com/E-Almqvist/roomcomputer.git
 	pip install -r requirements.txt
+Then run the installation script `./install.sh`. This script will make a symlink to `/opt/roomcomputer` and link `hue_cmd.py` to `/usr/bin/hue`. 
 
 ### Setup and Configuration
 Run the `setup.sh` script in order to copy the necessary files to `~/.config/roomcomputer/`. If you are planning to create a service for the `speech_daemon.py` with systemd; then you can specify its configuration file as the first argument: `speech_daemon.py /path/to/config/config.json`.

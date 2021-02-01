@@ -2,11 +2,11 @@
 
 repoPath=$(dirname "$(realpath $0)")
 
-echo Installing roomcomputer at /opt/...
-sudo mkdir -p /opt/roomcomputer
-sudo cp -r $repoPath /opt/
+echo Creating roomcomputer symlink in /opt/...
+sudo ln -s $repoPath /opt/roomcomputer
+sudo pip install -r /opt/roomcomputer/requirements.txt
 
-echo Linking binaries to /usr/bin/...
+echo Creating hue_cmd.py symlink in /usr/bin/...
 sudo ln -s /opt/roomcomputer/hue_cmd.py  /usr/bin/hue
 
 echo Done.
