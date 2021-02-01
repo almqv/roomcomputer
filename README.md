@@ -1,15 +1,22 @@
 # Room-Computer
 Room-Computer is a simple room controller and is basically a controller for your gadgets. *This is a work-in-progress* so keep in mind that more features will be added in the future. Check the [feature list](#features) to view all of the current supported things and stuff.
 
-### Installation
+## Installation
 	git clone https://github.com/E-Almqvist/roomcomputer.git
 	pip install -r requirements.txt
 Then run the installation script `./install.sh`. This script will make a symlink to `/opt/roomcomputer` and link `hue_cmd.py` to `/usr/bin/hue`. 
 
-### Setup and Configuration
-Run the `setup.sh` script in order to copy the necessary files to `~/.config/roomcomputer/`. If you are planning to create a service for the `speech_daemon.py` with systemd; then you can specify its configuration file as the first argument: `speech_daemon.py /path/to/config/config.json`.
+### Getting started 
+**BEFORE YOU DO ANYTHING!**: Register a new application and user for your HUE bridge. Follow  [this](https://developers.meethue.com/develop/get-started-2/) guide to get started. 
 
-#### HUE Lights presets
+Run the `setup.sh` script (if you did not run the install script) in order to copy the necessary files to `~/.config/roomcomputer/`. If you are planning to create a service for the `speech_daemon.py` with systemd; then you can specify its configuration file as the first argument: `speech_daemon.py /path/to/config/config.json`.
+	
+
+<br><br>
+
+## Usage
+
+#### HUE Light presets
 You can create presets in the `~/.config/roomcomputer/presets.json` file. Follow this syntax *(and JSON syntax of course)*:
 ```json
 {
@@ -19,9 +26,9 @@ You can create presets in the `~/.config/roomcomputer/presets.json` file. Follow
 	},
 }
 ```
-	
+The `color` is in RGB format (8bit) and `brightness` is also 0-255 (8bit).
 
-### Usage
+
 #### HUE Remote
 	--Help page--
 	'hue' : Display this help page
