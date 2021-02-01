@@ -46,7 +46,7 @@ For convenience, you can create an alias for the script file. Append this to you
 
 <h3 id="features">Features</h3>
 
-* HUE Light Controller (command-line) `hue_cmd.py)`
+* HUE Light Controller (command-line) `hue_cmd.py`
 * HUE Light Controller (voice daemon) `speech_daemon.py`
  
  And more to come!
